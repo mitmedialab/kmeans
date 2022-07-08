@@ -8,13 +8,15 @@ Created by Tom-Lucas Säger 2021
 
 let data = [];
 let calculated = false;
+var isDrawing = false;
 let kmeans; 
 let slider, sliderLabel;
 
 //We set up our canvas and change the colorMode to HSB which will come in handy later. 
 function setup() {
   createCanvas(600, 400);
-  background(200);
+  background(0, 163, 46);
+
   colorMode(HSB);
   // User instructions are added 
   // let instructions = "Click on the canvas to add data points.\nClick the button Cluster, to cluster them. \nAdjust the number of clusters with the slider."
@@ -27,6 +29,13 @@ function setup() {
   slider.input(sliderAdjusted);
   sliderLabel = createP('Number of Clusters: ' + slider.value());
 
+  let clearButton = createButton('Clear');
+  clearButton.mouseClicked(clearPage);
+
+  let drawButton = createButton('&#9999; Draw to Guess Clusters');
+  drawButton.mouseClicked(drawActivated);
+
+
   noStroke();
   ellipseMode(CENTER);
 }
@@ -37,11 +46,21 @@ function sliderAdjusted(){
 //If the mouse is clicked and it is not in bottom of our canvas, 
 //the mouse coordinates get added to our data array and drawn to the canvas. 
 function mousePressed(){
-  if(mouseY < height-5){
-  data.push({x: mouseX, y: mouseY});
-  fill(255)
-  ellipse(mouseX, mouseY, 20,20)
+  if (isDrawing==false){
+    if(mouseY < height-5){
+    data.push({x: mouseX, y: mouseY});
+    fill(255)
+    ellipse(mouseX, mouseY, 20,20)
   }
+  }
+}
+
+function clearPage(){
+  location.reload();
+}
+
+function drawActivated(){
+  isDrawing = true;
 }
 //On click of the cluster button we create our kmeans object with to data we collected,
 // the number of clusters from our slider and two other options.
@@ -59,7 +78,18 @@ function clustersCalculated() {
 }
 //Once the results are in we recolor the data-points based on their centroid 
 function draw() {
+
+  
+  if (mouseIsPressed === true && isDrawing == true) {
+    stroke(255,240,0);
+    strokeWeight(4);
+    line(mouseX, mouseY, pmouseX, pmouseY);
+  }
+
+
   if (calculated) {
+  noStroke();
+
     for (i = 0; i < kmeans.dataset.length; i++) {
       let centroid = kmeans.dataset[i].centroid;
       let datapointx = kmeans.dataset[i][0];
