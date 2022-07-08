@@ -12,6 +12,8 @@ var isDrawing = false;
 let kmeans; 
 let slider, sliderLabel;
 
+let drawButton;
+
 //We set up our canvas and change the colorMode to HSB which will come in handy later. 
 function setup() {
   createCanvas(600, 400);
@@ -32,9 +34,8 @@ function setup() {
   let clearButton = createButton('Clear');
   clearButton.mouseClicked(clearPage);
 
-  let drawButton = createButton('&#9999; Draw to Guess Clusters');
+  drawButton = createButton('&#9999; Draw to Guess Clusters');
   drawButton.mouseClicked(drawActivated);
-
 
   noStroke();
   ellipseMode(CENTER);
@@ -84,6 +85,7 @@ function draw() {
     stroke(255,240,0);
     strokeWeight(4);
     line(mouseX, mouseY, pmouseX, pmouseY);
+    drawButton.hide();
   }
 
 
