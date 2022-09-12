@@ -16,8 +16,14 @@ let drawButton;
 
 //We set up our canvas and change the colorMode to HSB which will come in handy later. 
 function setup() {
-  createCanvas(600, 400);
-  background(0, 163, 46);
+
+  var myCanvas = createCanvas(600, 400);
+  myCanvas.parent(document.getElementById('canvasrow'));
+  background(200, 160, 200);
+  noFill();
+  stroke(100,10,100);
+  strokeWeight(6);
+  rect(0,0,600,400);
 
   colorMode(HSB);
   // User instructions are added 
@@ -25,16 +31,23 @@ function setup() {
   // text(instructions, 10, height/2);
   //A button is added to start clustering the data
   let calculateButton = createButton('Cluster');
+  calculateButton.parent(document.getElementById('cluster'));
+  calculateButton.style('background-color', '#96EE71');
+
   calculateButton.mouseClicked(cluster)
   //A slider with a label is added to let the user adjust the number of clusters 
   slider = createSlider(1,10,2,1);
+  slider.parent(document.getElementById('sliderrow'));
   slider.input(sliderAdjusted);
   sliderLabel = createP('Number of Clusters: ' + slider.value());
+  sliderLabel.parent(document.getElementById('sliderrow'));
 
   let clearButton = createButton('Clear');
+  clearButton.parent(document.getElementById('clear'));
   clearButton.mouseClicked(clearPage);
 
   drawButton = createButton('&#9999; Draw to Guess Clusters');
+  drawButton.parent(document.getElementById('draw'));
   drawButton.mouseClicked(drawActivated);
 
   noStroke();
@@ -43,6 +56,8 @@ function setup() {
 //Once the slider is updated we adjust the label.
 function sliderAdjusted(){
   sliderLabel.html('Number of Cluster: ' + slider.value())
+  
+
 }
 //If the mouse is clicked and it is not in bottom of our canvas, 
 //the mouse coordinates get added to our data array and drawn to the canvas. 
